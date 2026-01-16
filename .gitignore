@@ -1,0 +1,223 @@
+# ========================================
+# Java & Maven
+# ========================================
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ========================================
+# IDE & Editors
+# ========================================
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+.idea_modules/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+tmp/
+.metadata
+.recommenders/
+*.launch
+*.pydevproject
+.buildpath
+.target
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# ========================================
+# Operating System
+# ========================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ========================================
+# Logs & Temporary Files
+# ========================================
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.cache
+logs/
+temp/
+tmp/
+
+# ========================================
+# Docker & Containers
+# ========================================
+docker-compose.override.yml
+
+# Ignore data volumes (don't commit database/redis/kafka data)
+postgres-data/
+redis-data/
+kafka-data/
+zookeeper-data/
+zookeeper-logs/
+
+# ========================================
+# Spring Boot
+# ========================================
+application-local.yml
+application-dev.yml
+application-prod.yml
+HELP.md
+.springBeans
+spring-boot-devtools.properties
+
+# ========================================
+# Database
+# ========================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ========================================
+# Node.js & Frontend (for future phases)
+# ========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+.next/
+.nuxt/
+.cache/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ========================================
+# Testing
+# ========================================
+coverage/
+*.coverage
+.nyc_output/
+test-results/
+.pytest_cache/
+
+# ========================================
+# Security & Secrets
+# ========================================
+*.pem
+*.key
+*.cert
+*.crt
+secrets/
+.secrets/
+credentials/
+*.credentials
+
+# API keys and tokens (never commit these!)
+.api-keys
+*.token
+.aws/
+.gcp/
+
+# ========================================
+# Kubernetes (future use)
+# ========================================
+kubeconfig
+*.kubeconfig
+secrets.yml
+secrets.yaml
+
+# ========================================
+# Miscellaneous
+# ========================================
+*.pid
+*.seed
+*.pid.lock
+.grunt
+bower_components
+
+# Backup files
+*.orig
+*.backup
+
+# Compiled output
+*.o
+*.so
+*.dylib
+*.dll
+
+# Package files
+*.deb
+*.rpm
+
+# Archives
+*.7z
