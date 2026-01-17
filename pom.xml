@@ -16,9 +16,9 @@
     <modules>
         <module>common</module>
         <module>url-service</module>
-        <!-- Modules to be added in later phases -->
+        <module>api-gateway</module>
+        <!-- Modules to be added later -->
         <!-- <module>analytics-service</module> -->
-        <!-- <module>api-gateway</module> -->
     </modules>
 
     <properties>

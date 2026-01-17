@@ -1,0 +1,92 @@
+spring:
+  application:
+    name: api-gateway
+  
+  profiles:
+    active: local
+  
+  # Database Configuration (for user management)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/urlshortener
+    username: urluser
+    password: urlpass123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  # Redis Configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+  
+  # Cloud Gateway Configuration
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 5000
+        response-timeout: 30s
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000,http://localhost:8080"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+
+# Server Configuration
+server:
+  port: 8080
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:MyVerySecretKeyForJWTTokenGenerationThatIsAtLeast256BitsLong1234567890}
+  expiration: ${JWT_EXPIRATION:86400000}  # 24 hours in milliseconds
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,gateway
+  endpoint:
+    health:
+      show-details: always
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.urlshortener.gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+---
+# Docker Profile
+spring:
+  config:
+    activate:
+      on-profile: docker
+  
+  datasource:
+    url: jdbc:postgresql://postgres:5432/urlshortener
+  
+  data:
+    redis:
+      host: redis
+
+server:
+  port: 8080

@@ -134,7 +134,8 @@ mvn clean install
 
 **Option A: Run with Docker (Recommended)**
 ```bash
-docker-compose up --build
+docker-compose build
+docker-compose up
 ```
 
 **Option B: Run Locally**

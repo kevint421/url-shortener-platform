@@ -137,7 +137,7 @@ spring-boot-devtools.properties
 *.sqlite3
 
 # ========================================
-# Node.js & Frontend (for future phases)
+# Node.js & Frontend
 # ========================================
 node_modules/
 npm-debug.log*
