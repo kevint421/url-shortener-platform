@@ -7,14 +7,14 @@ COPY pom.xml .
 COPY common/pom.xml common/pom.xml
 COPY url-service/pom.xml url-service/pom.xml
 COPY api-gateway/pom.xml api-gateway/pom.xml
+COPY analytics-service/pom.xml analytics-service/pom.xml
 
-# Copy source code
+# Copy source code (only common and api-gateway)
 COPY common/src common/src
-COPY url-service/src url-service/src
 COPY api-gateway/src api-gateway/src
 
-# Build everything from root 
-RUN mvn clean install -DskipTests
+# Build only common and api-gateway
+RUN mvn -pl common,api-gateway -am clean install -DskipTests
 
 # Runtime stage
 FROM eclipse-temurin:21-jre-alpine
