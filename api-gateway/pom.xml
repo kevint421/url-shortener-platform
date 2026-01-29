@@ -30,7 +30,7 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
 
-        <!-- Spring Boot Starter Web (for RestTemplate) -->
+        <!-- Spring Boot Starter WebFlux (for Gateway and reactive controllers) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>

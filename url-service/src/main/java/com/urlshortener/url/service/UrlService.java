@@ -150,7 +150,7 @@ public class UrlService {
      */
     @Transactional(readOnly = true)
     public List<UrlDetailsResponse> getUserUrls(Long userId) {
-        List<Url> urls = urlRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        List<Url> urls = urlRepository.findByUserIdAndIsActiveTrueOrderByCreatedAtDesc(userId);
         return urls.stream()
                 .map(this::mapToDetailsResponse)
                 .collect(Collectors.toList());

@@ -37,13 +37,8 @@ spring:
       httpclient:
         connect-timeout: 5000
         response-timeout: 30s
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "http://localhost:3000,http://localhost:8080"
-            allowedMethods: "*"
-            allowedHeaders: "*"
-            allowCredentials: true
+      # CORS is handled by CorsWebFilter bean (see CorsConfig.java)
+      # No need for globalcors - CorsWebFilter works for both proxied and local endpoints
 
 # Server Configuration
 server:
@@ -74,19 +69,33 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 
+# Service URLs (local profile)
+services:
+  url-service:
+    url: http://localhost:8081
+  analytics-service:
+    url: http://localhost:8082
+
 ---
 # Docker Profile
 spring:
   config:
     activate:
       on-profile: docker
-  
+
   datasource:
     url: jdbc:postgresql://postgres:5432/urlshortener
-  
+
   data:
     redis:
       host: redis
 
 server:
   port: 8080
+
+# Service URLs (Docker profile)
+services:
+  url-service:
+    url: http://url-service:8081
+  analytics-service:
+    url: http://analytics-service:8082

@@ -73,10 +73,9 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
      * Check if endpoint is public (doesn't require authentication)
      */
     private boolean isPublicEndpoint(String path) {
-        return path.equals("/api/auth/register") ||
-               path.equals("/api/auth/login") ||
+        return path.startsWith("/api/auth/") ||
                path.startsWith("/actuator") ||
-               path.matches("/[a-zA-Z0-9]{7}"); // Short code redirects
+               path.matches("/[a-zA-Z0-9-_]+"); // Short code redirects (7+ chars)
     }
     
     /**

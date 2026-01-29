@@ -1,5 +1,6 @@
 package com.urlshortener.analytics.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -31,6 +32,7 @@ public class UrlClick {
     
     @CreatedDate
     @Column(nullable = false, name = "clicked_at")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime clickedAt;
     
     @Column(length = 45, name = "ip_address")

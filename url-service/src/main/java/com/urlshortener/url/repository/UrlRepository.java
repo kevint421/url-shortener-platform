@@ -33,7 +33,7 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
     @Query("SELECT u FROM Url u WHERE u.expiresAt < :now AND u.isActive = true")
     List<Url> findExpiredUrls(@Param("now") LocalDateTime now);
     
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE Url u SET u.clickCount = u.clickCount + 1 WHERE u.shortCode = :shortCode")
     int incrementClickCount(@Param("shortCode") String shortCode);
 }
