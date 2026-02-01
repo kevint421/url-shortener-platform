@@ -1,0 +1,7 @@
+# Test-specific configuration
+spring:
+  task:
+    execution:
+      shutdown:
+        await-termination: true
+        await-termination-period: 5s

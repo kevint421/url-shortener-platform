@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: url-service-pdb
+  namespace: urlshortener
+  labels:
+    app: url-service
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: url-service

@@ -1,0 +1,33 @@
+# Kubernetes Gitignore
+
+# Secrets (never commit secrets to git!)
+config/secrets-*.yaml
+secrets/
+*.secret.yaml
+
+# Environment-specific configurations
+config/*-prod.yaml
+config/*-production.yaml
+
+# Backup files
+*.bak
+*.backup
+*.sql
+*.sql.gz
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Kustomize build output
+kustomization.yaml.bak

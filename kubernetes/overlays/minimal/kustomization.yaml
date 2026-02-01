@@ -1,0 +1,214 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: urlshortener
+
+resources:
+  - ../../base
+  - ../../config
+  - ../../infrastructure/postgres
+  - ../../infrastructure/redis
+  - ../../infrastructure/kafka-statefulset
+  - ../../services/url-service
+  - ../../services/analytics-service
+  - ../../services/api-gateway
+  - ../../services/frontend
+  - ../../ingress
+
+labels:
+  - pairs:
+      environment: minimal
+
+patches:
+  # Force single replicas for all deployments
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+
+  # Reduce PostgreSQL resources and storage
+  - target:
+      kind: StatefulSet
+      name: postgres
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+
+  - target:
+      kind: PersistentVolumeClaim
+      name: postgres-pvc
+    patch: |-
+      - op: replace
+        path: /spec/resources/requests/storage
+        value: 2Gi
+      - op: replace
+        path: /spec/storageClassName
+        value: standard
+
+  # Reduce Redis resources and storage
+  - target:
+      kind: StatefulSet
+      name: redis
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+
+  - target:
+      kind: PersistentVolumeClaim
+      name: redis-pvc
+    patch: |-
+      - op: replace
+        path: /spec/resources/requests/storage
+        value: 500Mi
+      - op: replace
+        path: /spec/storageClassName
+        value: standard
+
+  # Reduce Zookeeper resources and storage class, adjust probes
+  - target:
+      kind: StatefulSet
+      name: zookeeper
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+      - op: replace
+        path: /spec/template/spec/containers/0/livenessProbe/initialDelaySeconds
+        value: 60
+      - op: replace
+        path: /spec/template/spec/containers/0/livenessProbe/failureThreshold
+        value: 5
+      - op: replace
+        path: /spec/template/spec/containers/0/readinessProbe/initialDelaySeconds
+        value: 40
+      - op: replace
+        path: /spec/template/spec/containers/0/readinessProbe/failureThreshold
+        value: 5
+      - op: replace
+        path: /spec/volumeClaimTemplates/0/spec/storageClassName
+        value: standard
+      - op: replace
+        path: /spec/volumeClaimTemplates/0/spec/resources/requests/storage
+        value: 2Gi
+      - op: replace
+        path: /spec/volumeClaimTemplates/1/spec/storageClassName
+        value: standard
+      - op: replace
+        path: /spec/volumeClaimTemplates/1/spec/resources/requests/storage
+        value: 2Gi
+
+  # Reduce Kafka resources, heap, and storage class
+  - target:
+      kind: StatefulSet
+      name: kafka
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+      - op: replace
+        path: /spec/template/spec/containers/0/env/12/value
+        value: "-Xms256m -Xmx512m"
+      - op: replace
+        path: /spec/volumeClaimTemplates/0/spec/storageClassName
+        value: standard
+      - op: replace
+        path: /spec/volumeClaimTemplates/0/spec/resources/requests/storage
+        value: 10Gi
+
+  # Reduce URL Service resources
+  - target:
+      kind: Deployment
+      name: url-service
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 150m
+            memory: 384Mi
+          limits:
+            cpu: 500m
+            memory: 768Mi
+
+  # Reduce Analytics Service resources
+  - target:
+      kind: Deployment
+      name: analytics-service
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: 750m
+            memory: 1Gi
+
+  # Reduce API Gateway resources
+  - target:
+      kind: Deployment
+      name: api-gateway
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 300m
+            memory: 512Mi
+
+  # Reduce Frontend resources
+  - target:
+      kind: Deployment
+      name: frontend
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+
+images:
+  - name: url-shortener/url-service
+    newTag: latest
+  - name: url-shortener/analytics-service
+    newTag: latest
+  - name: url-shortener/api-gateway
+    newTag: latest
+  - name: url-shortener/frontend
+    newTag: latest

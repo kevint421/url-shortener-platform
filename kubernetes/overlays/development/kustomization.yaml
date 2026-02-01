@@ -1,0 +1,87 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: urlshortener
+
+resources:
+  - ../../base
+  - ../../config
+  - ../../infrastructure/postgres
+  - ../../infrastructure/redis
+  - ../../infrastructure/kafka-statefulset
+  - ../../services/url-service
+  - ../../services/analytics-service
+  - ../../services/api-gateway
+  - ../../services/frontend
+  - ../../ingress
+
+labels:
+  - pairs:
+      environment: development
+
+patches:
+  # Reduce replicas for development
+  - target:
+      kind: Deployment
+      name: url-service
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+
+  - target:
+      kind: Deployment
+      name: analytics-service
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+
+  - target:
+      kind: Deployment
+      name: api-gateway
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+
+  - target:
+      kind: Deployment
+      name: frontend
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+
+  # Reduce storage for development
+  - target:
+      kind: PersistentVolumeClaim
+      name: postgres-pvc
+    patch: |-
+      - op: replace
+        path: /spec/resources/requests/storage
+        value: 5Gi
+      - op: replace
+        path: /spec/storageClassName
+        value: standard
+
+  - target:
+      kind: PersistentVolumeClaim
+      name: redis-pvc
+    patch: |-
+      - op: replace
+        path: /spec/resources/requests/storage
+        value: 1Gi
+      - op: replace
+        path: /spec/storageClassName
+        value: standard
+
+images:
+  - name: url-shortener/url-service
+    newTag: dev
+  - name: url-shortener/analytics-service
+    newTag: dev
+  - name: url-shortener/api-gateway
+    newTag: dev
+  - name: url-shortener/frontend
+    newTag: dev

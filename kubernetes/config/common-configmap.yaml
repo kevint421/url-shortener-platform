@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-config
+  namespace: urlshortener
+data:
+  # Database Configuration
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "urlshortener"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/urlshortener"
+
+  # Redis Configuration
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  SPRING_DATA_REDIS_HOST: "redis"
+  SPRING_DATA_REDIS_PORT: "6379"
+
+  # Kafka Configuration
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-bootstrap:9092"
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka-bootstrap:9092"
+
+  # Service URLs
+  URL_SERVICE_URL: "http://url-service:8081"
+  ANALYTICS_SERVICE_URL: "http://analytics-service:8082"
+
+  # Spring Configuration
+  SPRING_PROFILES_ACTIVE: "kubernetes"
+
+  # Logging
+  LOGGING_LEVEL_ROOT: "INFO"
+  LOGGING_LEVEL_COM_URLSHORTENER: "DEBUG"
